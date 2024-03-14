@@ -15,17 +15,18 @@ spec:
         ingress:
           enabled: true
           annotations:
-            cert-manager.io/issuer: "letsencrypt-staging"
+            cert-manager.io/issuer: "letsencrypt-prod"
           ingressClassName: nginx
           tls: true
           hostname: minio-dev.tcc-clinicalsolutions.de
+        
         apiIngress:
           enabled: false
           annotations:
-            cert-manager.io/issuer: "letsencrypt-staging"
+            cert-manager.io/issuer: "letsencrypt-prod"
           ingressClassName: nginx
           tls: true
-          hostsName: api.minio-dev.tcc-clinicalsolutions.de
+          hostname: api.minio-dev.tcc-clinicalsolutions.de
         
         persistence:
           storageClass: csi-disk
