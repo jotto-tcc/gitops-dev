@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-dev
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: telehealth
+    server: https://kubernetes.default.svc
+  project: infrastructure
+  source:
+    chart: minio
+    helm:
+      values: |-
+        persistence:
+          storageClass: csi-disk
+          annotations:
+            everest.io/disk-volume-type: SATA
+            volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+            volume.kubernetes.io/storage-provisioner: everest-csi-provisioner
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 13.8.2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
