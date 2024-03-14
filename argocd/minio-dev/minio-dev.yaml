@@ -12,6 +12,19 @@ spec:
     chart: minio
     helm:
       values: |-
+        ingress:
+          enabled: true
+          ingressClassName: nginx
+          tls: true
+          hosts:
+            - minio-dev.tcc-clinicalsolutions.de
+        apiIngress:
+          enabled: true
+          ingressClassName: nginx
+          tls: true
+          hosts:
+            - api.minio-dev.tcc-clinicalsolutions.de
+        
         persistence:
           storageClass: csi-disk
           annotations:
