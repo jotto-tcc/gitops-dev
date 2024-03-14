@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: telehealth
+    server: https://kubernetes.default.svc
+  project: infrastructure
+  source:
+    chart: keycloak
+    helm:
+      parameters:
+      - name: ingress.enabled
+        value: "true"
+      - name: ingress.hostname
+        value: keycloak-dev.tcc-clinicalsolutions.de
+      - name: ingress.tls
+        value: "true"
+      - name: externalDatabase.host
+        value: 10.9.24.10
+      - name: externalDatabase.user
+        value: keycloak
+      - name: externalDatabase.database
+        value: keycloak
+      - name: postgresql.enabled
+        value: "false"
+      - name: externalDatabase.existingSecret
+        value: keycloak-externaldb-secret
+      - name: externalDatabase.existingSecretPasswordKey
+        value: db-password
+      - name: ingress.ingressClassName
+        value: nginx
+      - name: auth.passwordSecretKey
+        value: admin-password
+      - name: auth.adminUser
+        value: admin
+      - name: auth.existingSecret
+        value: keycloak-admin-secret
+      values: |-
+        extraEnvVars:
+          - name: KC_HOSTNAME_URL
+            value: https://keycloak-dev.tcc-clinicalsolutions.de
+          - name: KC_HOSTNAME_ADMIN_URL
+            value: https://keycloak-dev.tcc-clinicalsolutions.de
+        ingress:
+          annotations:
+            cert-manager.io/issuer: "letsencrypt-prod"
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 18.3.4
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
