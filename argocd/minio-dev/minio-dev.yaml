@@ -19,6 +19,10 @@ spec:
           ingressClassName: nginx
           tls: true
           hostName: minio-dev.tcc-clinicalsolutions.de
+          secrets:
+            - name: minio-dev.tcc-clinicalsolutions.de-tls
+              key: ""
+              certificate: ""
         apiIngress:
           enabled: false
           annotations:
