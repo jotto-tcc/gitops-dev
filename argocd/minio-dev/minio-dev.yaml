@@ -12,6 +12,8 @@ spec:
     chart: minio
     helm:
       values: |-
+        auth:
+          existingSecret: "minio-dev-credentials"
         ingress:
           enabled: true
           annotations:
