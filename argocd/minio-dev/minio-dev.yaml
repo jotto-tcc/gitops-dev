@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-dev
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: telehealth
+    server: https://kubernetes.default.svc
+  project: infrastructure
+  source:
+    chart: minio
+    helm:
+      values: |-
+        auth:
+          existingSecret: "minio-dev-credentials"
+        ingress:
+          enabled: true
+          annotations:
+            cert-manager.io/issuer: "letsencrypt-prod"
+          ingressClassName: nginx
+          tls: true
+          hostname: minio-dev.tcc-clinicalsolutions.de
+        
+        apiIngress:
+          enabled: false
+          annotations:
+            cert-manager.io/issuer: "letsencrypt-prod"
+          ingressClassName: nginx
+          tls: true
+          hostname: api.minio-dev.tcc-clinicalsolutions.de
+        
+        persistence:
+          storageClass: csi-disk
+          annotations:
+            everest.io/disk-volume-type: SATA
+            volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+            volume.kubernetes.io/storage-provisioner: everest-csi-provisioner
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 13.8.2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
