@@ -20,7 +20,7 @@ spec:
           tls: true
           hostName: minio-dev.tcc-clinicalsolutions.de
         apiIngress:
-          enabled: true
+          enabled: false
           annotations:
             cert-manager.io/issuer: "letsencrypt-staging"
           ingressClassName: nginx
