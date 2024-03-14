@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak1
+  name: keycloak
   namespace: argo-cd
 spec:
   destination:
@@ -15,7 +15,7 @@ spec:
       - name: ingress.enabled
         value: "true"
       - name: ingress.hostname
-        value: keycloak-dev1.tcc-clinicalsolutions.de
+        value: keycloak-dev.tcc-clinicalsolutions.de
       - name: ingress.tls
         value: "true"
       - name: externalDatabase.host
@@ -41,12 +41,12 @@ spec:
       values: |-
         extraEnvVars:
           - name: KC_HOSTNAME_URL
-            value: https://keycloak-dev1.tcc-clinicalsolutions.de
+            value: https://keycloak-dev.tcc-clinicalsolutions.de
           - name: KC_HOSTNAME_ADMIN_URL
-            value: https://keycloak-dev1.tcc-clinicalsolutions.de
+            value: https://keycloak-dev.tcc-clinicalsolutions.de
         ingress:
           annotations:
-            cert-manager.io/issuer: "letsencrypt-staging"
+            cert-manager.io/issuer: "letsencrypt-prod"
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 18.3.4
   syncPolicy:
