@@ -9,7 +9,7 @@ spec:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
         revision: try-application-set
         directories:
-          - path: argocd/applications/*
+          - path: argocd/applications/telehealth/*
   template:
     metadata:
       name: '{{path.basename}}-applications'
