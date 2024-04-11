@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: data-service-validation
+  name: deployment-data-service-validation
+  namespace: data-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-service-validation
+  template:
+    metadata:
+      labels:
+        app: data-service-validation
+      name: data-service-validation
+    spec:
+      containers:
+        - envFrom:
+            - secretRef:
+                name: secret-data-service-validation
+          image: swr.eu-de.otc.t-systems.com/data-services/data-service-validation-backend:latest
+          imagePullPolicy: Always
+          name: data-service-validation-backend
+          ports:
+            - containerPort: 8000
+              name: backend
+
+        - image: swr.eu-de.otc.t-systems.com/data-services/data-service-validation-frontend:latest
+          envFrom:
+            - secretRef:
+                name: secret-data-service-validation
+          imagePullPolicy: Always
+          name: data-service-validation-frontend
+          ports:
+            - containerPort: 8501
+              name: frontend
+
+      hostNetwork: false
+      imagePullSecrets:
+        - name: image-pull-secret

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-data-service-validation
+  namespace: data-service
+spec:
+  selector:
+    app: data-service-validation
+  ports:
+    - protocol: TCP
+      port: 8501
+      name: frontend-svc
+      targetPort: frontend
+    - protocol: TCP
+      port: 8000
+      name: backend-svc
+      targetPort: backend
+
+  type: NodePort
