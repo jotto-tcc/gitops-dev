@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
-        revision: try-application-set
+        revision: main
         directories:
           - path: argocd/applications/telehealth/*
   template:
@@ -17,7 +17,7 @@ spec:
       project: telehealth
       source:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
-        targetRevision: try-application-set
+        targetRevision: main
         path: '{{path}}'
       destination:
         server: 'https://kubernetes.default.svc'
