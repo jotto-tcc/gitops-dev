@@ -18,9 +18,9 @@ spec:
     spec:
       containers:
         - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v0.0.3
-#        - envFrom:
-#            - secretRef:
-#                name: secret-telehealth-data-integration
+          envFrom:
+            - secretRef:
+                name: telehealth-data-integration-api-secret
           command:
             - uvicorn
             - src.telehealth_data_integration_api.main:app
