@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: telehealth-data-integration-oauth2-proxy.yaml
+  name: telehealth-data-integration-oauth2-proxy
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
