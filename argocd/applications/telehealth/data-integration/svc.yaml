@@ -11,4 +11,4 @@ spec:
       port: 8000
       name: api-svc
       targetPort: api
-  type: NodePort
+  type: ClusterIP
