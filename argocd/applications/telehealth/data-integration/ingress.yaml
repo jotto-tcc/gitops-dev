@@ -26,6 +26,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: api-svc
+                name: svc-telehealth-data-integration-api
                 port:
                   number: 8000
