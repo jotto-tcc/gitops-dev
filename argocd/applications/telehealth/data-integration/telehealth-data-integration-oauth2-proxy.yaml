@@ -17,7 +17,7 @@ spec:
       helm:
         values: |-
           config:
-            existingSecret: airflow-oauth2-proxy-secret
+            existingSecret: telehealth-data-integration-oauth2-secret
             configFile: |-
               upstreams = [ "file:///dev/null" ]
               provider = "keycloak-oidc"
