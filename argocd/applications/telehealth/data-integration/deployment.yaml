@@ -17,7 +17,7 @@ spec:
       name: telehealth-data-integration-api
     spec:
       containers:
-        - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v0.0.12
+        - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v0.0.13
           envFrom:
             - secretRef:
                 name: telehealth-data-integration-api-secret
