@@ -4,7 +4,7 @@ metadata:
   labels:
     app: telehealth-data-integration
   name: deployment-telehealth-data-integration-api
-  namespace: telehealth
+  namespace: telehealth-data-integration
 spec:
   replicas: 1
   selector:

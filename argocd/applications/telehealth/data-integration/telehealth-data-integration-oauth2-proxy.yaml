@@ -8,7 +8,7 @@ metadata:
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: telehealth
+    namespace: telehealth-data-integration
   project: telehealth
   sources:
     - repoURL: 'https://oauth2-proxy.github.io/manifests'

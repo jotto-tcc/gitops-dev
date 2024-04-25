@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-telehealth-data-integration-api
-  namespace: telehealth
+  namespace: telehealth-data-integration
   labels:
     app: telehealth-data-integration
   annotations:
