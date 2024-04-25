@@ -26,6 +26,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: telehealth-data-integration-api-oauth2-proxy
+                name: telehealth-data-integration-oauth2-proxy
                 port:
                   number: 80
