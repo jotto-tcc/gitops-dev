@@ -20,6 +20,7 @@ spec:
             existingSecret: telehealth-data-integration-oauth2-secret
             configFile: |-
               upstreams = [ "file:///dev/null" ]
+              email_domains = [ "*" ]
               provider = "keycloak-oidc"
               oidc_issuer_url = "https://keycloak.tcc-clinicalsolutions.de/realms/TCC"
               code_challenge_method = "S256"
