@@ -18,6 +18,12 @@ spec:
       values: |-
         executor: "KubernetesExecutor"
         allowPodLaunching: true
+        createuserjob:  
+          useHelmHooks: false  
+          applyCustomEnv: false
+        migratedatabasejob:  
+          enabled: true  
+          useHelmHooks: false
         ingress:
           web:
             enabled: true
