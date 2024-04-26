@@ -17,15 +17,16 @@ spec:
     helm:
       values: |-
         executor: "KubernetesExecutor"
+        useStandardNaming: true
         allowPodLaunching: true
-        createuserjob:  
-          useHelmHooks: false  
-          applyCustomEnv: false
-        migratedatabasejob:  
-          enabled: true  
+        createUserJob:
           useHelmHooks: false
+          applyCustomEnv: false
+        migrateDatabaseJob:
+          useHelmHooks: false
+          applyCustomEnv: false
           jobAnnotations:
-              "argocd.argoproj.io/hook": Sync
+            "argocd.argoproj.io/hook": Sync
         ingress:
           web:
             enabled: true            
