@@ -26,7 +26,7 @@ spec:
           useHelmHooks: false
         ingress:
           web:
-            enabled: true
+            enabled: false
             
             hosts: [ airflow-dev.tcc.local ]
             # ingressClassName: "nginx"
