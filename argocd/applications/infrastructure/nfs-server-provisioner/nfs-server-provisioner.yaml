@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-server-provisioner
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ingress-nginx
+  project: infrastructure
+  source:
+    repoURL: 'https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner'
+    targetRevision: 1.8.0
+    chart: nfs-server-provisioner
+    helm:
+      values: |-
+        persistence:
+          enabled: true
+          existingClaim: "nfs-storage"
+          size: 100Gi
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
