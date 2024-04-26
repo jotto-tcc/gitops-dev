@@ -24,6 +24,8 @@ spec:
         migratedatabasejob:  
           enabled: true  
           useHelmHooks: false
+          jobAnnotations:
+              "argocd.argoproj.io/hook": Sync
         ingress:
           web:
             enabled: true            
