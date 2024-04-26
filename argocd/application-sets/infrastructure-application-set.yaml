@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure-application-set
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
+        revision: main
+        directories:
+          - path: argocd/applications/infrastructure/*
+  template:
+    metadata:
+      name: '{{path.basename}}-applications'
+    spec:
+      project: infrastructure
+      source:
+        repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: argo-cd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

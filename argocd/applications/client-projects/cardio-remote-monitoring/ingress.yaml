@@ -1,0 +1,102 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cardio-api-ingress-docs
+  namespace: client-projects
+  labels:
+    app: cardio-api
+
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "1024m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+spec:
+  tls:
+    - hosts:
+        - cardio-api-test.tcc-clinicalsolutions.de
+      secretName: cardio-api-tls
+  rules:
+    - host: cardio-api-test.tcc-clinicalsolutions.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: /docs
+            backend:
+              service:
+                name: cardio-api-service
+                port:
+                  number: 80
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cardio-api-ingress
+  namespace: client-projects
+  labels:
+    app: cardio-api
+
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "1024m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+spec:
+  tls:
+    - hosts:
+        - cardio-api-test.tcc-clinicalsolutions.de
+      secretName: cardio-api-tls
+  rules:
+    - host: cardio-api-test.tcc-clinicalsolutions.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: cardio-api-service
+                port:
+                  number: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cardio-api-ingress-oauth2-proxy
+  namespace: client-projects
+  labels:
+    app: cardio-api-oauth2-proxy
+
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #    cert-manager.io/issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "1024m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+spec:
+  tls:
+    - hosts:
+        - cardio-api-test.tcc-clinicalsolutions.de
+      secretName: cardio-api-tls
+  rules:
+    - host: cardio-api-test.tcc-clinicalsolutions.de
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy-cardio
+                port:
+                  number: 80

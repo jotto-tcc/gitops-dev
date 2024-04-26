@@ -1,0 +1,136 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: airflow
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: airflow
+  project: infrastructure
+  source:
+    repoURL: 'https://airflow.apache.org'
+    targetRevision: 1.13.1
+    chart: airflow
+    helm:
+      values: |-
+        executor: "KubernetesExecutor"
+        useStandardNaming: true
+        allowPodLaunching: true
+        createUserJob:
+          useHelmHooks: false
+          applyCustomEnv: false
+        migrateDatabaseJob:
+          useHelmHooks: false
+          applyCustomEnv: false
+          jobAnnotations:
+            "argocd.argoproj.io/hook": Sync
+        ingress:
+          web:
+            enabled: true            
+            hosts: [ airflow-dev.tcc.local ]
+            ingressClassName: "nginx"
+            
+            tls:
+              enabled: false  
+        data:
+          metadataSecretName: airflow-dev-connection
+        
+        webserverSecretKeySecretName: airflow-webserver-secret
+        
+        workers:
+          persistence:
+            enabled: false
+        
+          extraVolumes:
+            - name: email-template
+              configMap:
+                name: airflow-email-template
+          
+          extraVolumeMounts:
+            - name: email-template
+              mountPath: /var/airflow/email-templates
+              readOnly: true
+        
+        webserver:
+          extraVolumes:
+            - name: email-template
+              configMap:
+                name: airflow-email-template
+          
+          extraVolumeMounts:
+            - name: email-template
+              mountPath: /var/airflow/email-templates
+              readOnly: true
+        
+        triggerer:
+          persistence:
+            enabled: true
+            size: 1Gi
+            storageClassName: csi-disk
+            annotations:
+              everest.io/disk-volume-type: SATA
+        redis:
+          persistence:
+            enabled: true
+            size: 1Gi
+            storageClassName: csi-disk
+            annotations:
+              everest.io/disk-volume-type: SATA
+              
+        postgresql:
+          enabled: false
+        
+        secret:
+          - envName: SMTP_USER
+            secretName: airflow-smtp-secret
+            secretKey: user
+          - envName: SMTP_PASSWORD
+            secretName: airflow-smtp-secret
+            secretKey: password
+        
+        config:
+          smtp:
+            smtp_host: smtp.strato.de
+            smtp_starttls: True
+            smtp_ssl: False
+            smtp_user: $SMTP_USER
+            smtp_password: $SMTP_PASSWORD
+            smtp_port: 587
+            smtp_mail_from: no-reply@data-services.tcc-clinicalsolutions.de
+          email:
+            email_backend: airflow.utils.email.send_email_smtp
+            html_content_template: /var/airflow/email-templates/content_template.j2
+            subject_template: /var/airflow/email-templates/subject_template.j2
+          
+          webserver:
+            base_url: https://airflow.tcc-clinicalsolutions.de
+        
+        dags:
+          persistence:
+            enabled: false
+          gitSync:
+            enabled: true
+            repo: git@github.com:Telehealth-Competence-Center-GmbH/airflow-jobs.git
+            branch: develop
+            subPath: "dags"
+            
+            sshKeySecret: airflow-ssh-secret
+            
+            knownHosts: |
+              github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+              github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+              github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
+        
+        logs:
+          persistence:
+            enabled: true
+            existingClaim: "pvc-airflow-logs-2"
+        
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

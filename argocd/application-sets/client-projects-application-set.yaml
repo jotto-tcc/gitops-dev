@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: client-projects-application-set
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
+        revision: main
+        directories:
+          - path: argocd/applications/client-projects/*
+  template:
+    metadata:
+      name: '{{path.basename}}-applications'
+    spec:
+      project: client-projects
+      source:
+        repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: argo-cd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
