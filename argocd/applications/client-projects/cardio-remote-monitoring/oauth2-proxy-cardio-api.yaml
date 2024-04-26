@@ -13,7 +13,7 @@ spec:
   sources:
     - repoURL: 'https://oauth2-proxy.github.io/manifests'
       targetRevision: 6.23.1
-      chart: oauth2-proxy-secret
+      chart: oauth2-proxy
       helm:
         values: |-
           config:
