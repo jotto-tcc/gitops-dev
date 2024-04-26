@@ -11,6 +11,7 @@ spec:
   source:
     chart: gha-runner-scale-set
     repoURL: ghcr.io/actions/actions-runner-controller-charts
+    targetRevision: 0.8.2
     helm:
       values: |-
         githubConfigUrl: "https://github.com/Telehealth-Competence-Center-GmbH"
@@ -18,7 +19,9 @@ spec:
         github_token: ""
         containerMode:
           type: "dind"
-    targetRevision: 0.8.2
+        controllerServiceAccount:
+          namespace: arc-system
+          name: arc-system-gha-rs-controller
   syncPolicy:
     automated:
       prune: true
