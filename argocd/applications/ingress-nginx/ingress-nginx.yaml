@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx2
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ingress-nginx
+  project: infrastructure
+  source:
+    repoURL: 'https://kubernetes.github.io/ingress-nginx'
+    targetRevision: 4.8.3
+    chart: ingress-nginx
+    helm:
+      values: |-
+        controller:
+          config:
+            proxy-buffer-size: "64k"
+            proxy-body-size: "1024m"
+            use-forwarded-headers: "true"
+            forwarded-for-header: "X-Forwarded-For"
+          allowSnippetAnnotations: true
+        
+          service:
+            annotations:
+              kubernetes.io/elb.id: c4f62c95-19c7-44e9-99f1-23b66f9f5962
+              kubernetes.io/elb.class: union            
+            externalIPs: ["10.9.23.12"]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
