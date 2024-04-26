@@ -12,7 +12,7 @@ spec:
   project: infrastructure
   source:
     repoURL: 'https://airflow.apache.org'
-    targetRevision: 1.11.0
+    targetRevision: 1.13.1
     chart: airflow
     helm:
       values: |-
