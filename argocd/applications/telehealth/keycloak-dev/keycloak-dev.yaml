@@ -7,7 +7,7 @@ spec:
   destination:
     namespace: telehealth
     server: https://kubernetes.default.svc
-  project: infrastructure
+  project: telehealth
   source:
     chart: keycloak
     helm:
