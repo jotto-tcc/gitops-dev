@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cardio-api-deployment
+  namespace: client-projects
+  labels:
+    app: cardio-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cardio-api
+  template:
+    metadata:
+      labels:
+        app: cardio-api
+    spec:
+      containers:
+        - name: cardio-api
+          image: swr.eu-de.otc.t-systems.com/client-projects/cardio-monitoring:v0.1.0-dev2
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: secret-cardio-api
+      imagePullSecrets:
+        - name: docker-secret-johannes
