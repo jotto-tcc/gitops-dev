@@ -17,7 +17,7 @@ spec:
       helm:
         values: |-
           config:
-            existingSecret: telehealth-data-integration-oauth2-secret
+            existingSecret: oauth2-proxy-secret
             configFile: |-
               upstreams = [ "file:///dev/null" ]
               email_domains = [ "tcc-clinicalsolutions.de" , "swissanalytica.ch" ]
