@@ -5,7 +5,7 @@ metadata:
   namespace: argo-cd
 spec:
   destination:
-    namespace: arc-systems
+    namespace: arc-runners
     server: https://kubernetes.default.svc
   project: infrastructure
   source:

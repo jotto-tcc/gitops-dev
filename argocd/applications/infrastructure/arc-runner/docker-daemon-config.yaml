@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: docker-daemon-config
-  namespace: arc-systems
+  namespace: arc-runners
 data:
   daemon.json: |
     {
