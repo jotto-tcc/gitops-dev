@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
-        revision: feat/integrate-dev-applications
+        revision: main
         directories:
           - path: argocd/applications/client-projects/*
   template:
@@ -17,7 +17,7 @@ spec:
       project: client-projects
       source:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
-        targetRevision: feat/integrate-dev-applications
+        targetRevision: main
         path: '{{path}}'
       destination:
         server: 'https://kubernetes.default.svc'
