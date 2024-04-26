@@ -23,7 +23,7 @@ spec:
             enabled: true
             
             hosts: [ airflow-dev.tcc.local ]
-            ingressClassName: "nginx"
+            # ingressClassName: "nginx"
         data:
           metadataSecretName: airflow-dev-connection
         
