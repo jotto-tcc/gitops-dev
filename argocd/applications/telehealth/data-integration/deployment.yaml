@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: telehealth-data-integration
+  name: deployment-telehealth-data-integration-api
+  namespace: telehealth-data-integration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telehealth-data-integration
+  template:
+    metadata:
+      labels:
+        app: telehealth-data-integration
+      name: telehealth-data-integration-api
+    spec:
+      containers:
+        - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v0.0.15
+          envFrom:
+            - secretRef:
+                name: telehealth-data-integration-api-secret
+          command:
+            - uvicorn
+            - src.telehealth_data_integration_api.main:app
+            - --host
+            - 0.0.0.0
+            - --port
+            - '8000'
+          name: telehealth-data-integration-api
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: api
+      hostNetwork: false
+      imagePullSecrets:
+        - name: image-pull-secret

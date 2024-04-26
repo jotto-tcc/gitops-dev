@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-telehealth-data-integration-api-docs
+  namespace: telehealth-data-integration
+  labels:
+    app: cardio-api
+
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "1024m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+spec:
+  tls:
+    - hosts:
+        - telehealth-data-integration-dev.tcc-clinicalsolutions.de
+      secretName: telehealth-data-integration-api-tls
+  rules:
+    - host: telehealth-data-integration-dev.tcc-clinicalsolutions.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: /docs
+            backend:
+              service:
+                name: svc-telehealth-data-integration-api
+                port:
+                  number: 8000
