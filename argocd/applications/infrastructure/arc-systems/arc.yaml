@@ -10,7 +10,7 @@ spec:
   project: infrastructure
   source:
     chart: gha-runner-scale-set
-    repoURL: oci://ghcr.io/actions/actions-runner-controller-charts
+    repoURL: ghcr.io/actions/actions-runner-controller-charts
     targetRevision: 0.8.2
   syncPolicy:
     automated:
