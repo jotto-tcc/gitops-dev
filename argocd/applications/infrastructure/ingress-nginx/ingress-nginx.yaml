@@ -21,7 +21,7 @@ spec:
             use-forwarded-headers: "true"
             forwarded-for-header: "X-Forwarded-For"
           allowSnippetAnnotations: true
-        
+          allowPrivilegeEscalation: false
           service:
             annotations:
               kubernetes.io/elb.id: c4f62c95-19c7-44e9-99f1-23b66f9f5962
