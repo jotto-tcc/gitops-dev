@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: 'git@github.com:jotto-tcc/gitops-dev.git'
-        revision: update-cardio-api
+        revision: main
         directories:
           - path: argocd/applications/client-projects/*
   template:
