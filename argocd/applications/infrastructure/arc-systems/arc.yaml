@@ -11,8 +11,8 @@ spec:
   source:
     chart: gha-runner-scale-set-controller
     repoURL: ghcr.io/actions/actions-runner-controller-charts
-    helm:
-      skipCrds: true
+#    helm:
+#      skipCrds: true
     targetRevision: 0.9.1
   syncPolicy:
     automated:
