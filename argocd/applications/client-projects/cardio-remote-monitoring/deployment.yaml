@@ -20,6 +20,7 @@ spec:
           image: swr.eu-de.otc.t-systems.com/client-projects/cardio-monitoring:v0.1.0-dev2
           ports:
             - containerPort: 8000
+              name: fastapi
           envFrom:
             - secretRef:
                 name: secret-cardio-api
