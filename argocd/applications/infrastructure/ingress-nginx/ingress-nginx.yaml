@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: ingress-nginx
   namespace: argo-cd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
@@ -12,7 +10,7 @@ spec:
   project: infrastructure
   source:
     repoURL: 'https://kubernetes.github.io/ingress-nginx'
-    targetRevision: 4.8.3
+    targetRevision: 4.10.1
     chart: ingress-nginx
     helm:
       values: |-
@@ -27,8 +25,13 @@ spec:
           service:
             annotations:
               kubernetes.io/elb.id: c4f62c95-19c7-44e9-99f1-23b66f9f5962
-              kubernetes.io/elb.class: union            
-            externalIPs: ["10.9.23.12"]
+              kubernetes.io/elb.class: union
+          extraArgs:
+            http-port: 8080
+            https-port: 8081
+          containerPort:
+            http: 8080
+            https: 8081
   syncPolicy:
     automated:
       prune: true
