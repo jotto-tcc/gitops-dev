@@ -22,6 +22,8 @@ spec:
         controllerServiceAccount:
           namespace: arc-system
           name: arc-system-gha-rs-controller
+        maxRunners: 4
+        minRunners: 4
   syncPolicy:
     automated:
       prune: true
