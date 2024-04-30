@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: telehealth-data-integration-stg
-  name: deployment-telehealth-data-integration-api
+  name: deployment-telehealth-data-integration-stg-api
   namespace: telehealth-data-integration
 spec:
   replicas: 1
