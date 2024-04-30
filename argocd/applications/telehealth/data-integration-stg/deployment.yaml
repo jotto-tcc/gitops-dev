@@ -28,7 +28,7 @@ spec:
             - 0.0.0.0
             - --port
             - '8000'
-          name: telehealth-data-integration-stg-api-stg
+          name: telehealth-data-integration-stg-api
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
