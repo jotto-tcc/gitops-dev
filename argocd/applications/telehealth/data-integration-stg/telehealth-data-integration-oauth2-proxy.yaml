@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: telehealth-data-integration-stg-oauth2-proxy
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: telehealth-data-integration
+  project: telehealth
+  sources:
+    - repoURL: 'https://oauth2-proxy.github.io/manifests'
+      targetRevision: 6.23.1
+      chart: oauth2-proxy
+      helm:
+        values: |-
+          config:
+            existingSecret: telehealth-data-integration-stg-oauth2-secret
+            configFile: |-
+              upstreams = [ "file:///dev/null" ]
+              email_domains = [ "*" ]
+              provider = "keycloak-oidc"
+              oidc_issuer_url = "https://keycloak.tcc-clinicalsolutions.de/realms/TCC"
+              code_challenge_method = "S256"
+              cookie_refresh = "4m30s"
+              cookie_expire = "10h"
+              allowed_roles = "oauth2-proxy:telehealth-data-integration-api-docs"
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

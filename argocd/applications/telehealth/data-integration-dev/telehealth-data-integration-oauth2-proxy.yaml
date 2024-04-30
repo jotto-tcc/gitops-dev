@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: telehealth-data-integration-oauth2-proxy
+  name: telehealth-data-integration-dev-oauth2-proxy
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -17,7 +17,7 @@ spec:
       helm:
         values: |-
           config:
-            existingSecret: telehealth-data-integration-oauth2-secret
+            existingSecret: telehealth-data-integration-dev-oauth2-secret
             configFile: |-
               upstreams = [ "file:///dev/null" ]
               email_domains = [ "*" ]
