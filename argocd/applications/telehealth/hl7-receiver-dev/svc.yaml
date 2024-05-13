@@ -11,4 +11,5 @@ spec:
       port: 8000
       name: hl7-recv
       targetPort: api
-  type: ClusterIP
+      nodePort: 30008
+  type: NodePort
