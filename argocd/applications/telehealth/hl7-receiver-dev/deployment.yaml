@@ -17,7 +17,7 @@ spec:
       name: hl7-receiver-dev
     spec:
       containers:
-        - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v1.2.0-dev0
+        - image: swr.eu-de.otc.t-systems.com/telehealth/telehealth-data-integration:v1.2.0-dev2
           envFrom:
             - secretRef:
                 name: hl7-receiver-dev-secret
