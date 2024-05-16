@@ -37,7 +37,7 @@ githubConfigSecret: "github-runner-secret"
 #     - example.org
 
 ## maxRunners is the max number of runners the autoscaling runner set will scale up to.
-maxRunners: 1
+maxRunners: 2
 
 ## minRunners is the min number of idle runners. The target number of runners created will be
 ## calculated as a sum of minRunners and the number of jobs assigned to the scale set.
@@ -75,20 +75,20 @@ minRunners: 1
 ##
 ## If any customization is required for dind or kubernetes mode, containerMode should remain
 ## empty, and configuration should be applied to the template.
-containerMode: {}
-#  type: "dind"  ## type can be set to dind or kubernetes
+containerMode:
+  type: "dind"  ## type can be set to dind or kubernetes
 #   ## the following is required when containerMode.type=kubernetes
-#   kubernetesModeWorkVolumeClaim:
+#  kubernetesModeWorkVolumeClaim:
 #     accessModes: ["ReadWriteOnce"]
 #     # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
-#     storageClassName: "dynamic-blob-storage"
+#     storageClassName: "csi-disk"
 #     resources:
 #       requests:
 #         storage: 1Gi
-#   kubernetesModeServiceAccount:
+#  kubernetesModeServiceAccount:
 #     annotations:
 
-## template is the PodSpec for each listener Pod
+## listenerTemplate is the PodSpec for each listener Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
 # listenerTemplate:
 #   spec:
@@ -107,84 +107,55 @@ containerMode: {}
 
 ## template is the PodSpec for each runner Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
-#template:
+template:
   ## template.spec will be modified if you change the container mode
   ## with containerMode.type=dind, we will populate the template.spec with following pod spec
-template:
-  spec:
-    initContainers:
-    - name: init-dind-externals
-      image: ghcr.io/actions/actions-runner:latest
-      command: ["cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/"]
-      volumeMounts:
-        - name: dind-externals
-          mountPath: /home/runner/tmpDir
-    containers:
-    - name: runner
-      resources:
-        limits:
-          cpu: "1000m"
-          memory: "3Gi"
-        requests:
-          cpu: "10m"
-          memory: "64Mi"
-      image: ghcr.io/actions/actions-runner:latest
-      command: ["/home/runner/run.sh"]
-      env:
-        - name: DOCKER_HOST
-          value: unix:///run/docker/docker.sock
-      volumeMounts:
-        - name: work
-          mountPath: /home/runner/_work
-        - name: dind-sock
-          mountPath: /run/docker
-          readOnly: true
-#        - name: var-lib-docker
-#          mountPath: /var/lib/docker
-    - name: dind
-      image: docker:dind
-      args:
-        - dockerd
-        - --host=unix:///run/docker/docker.sock
-        - --group=$(DOCKER_GROUP_GID)
-      env:
-        - name: DOCKER_GROUP_GID
-          value: "123"
-      securityContext:
-        privileged: true
-      volumeMounts:
-        - name: work
-          mountPath: /home/runner/_work
-        - name: dind-sock
-          mountPath: /run/docker
-        - name: dind-externals
-          mountPath: /home/runner/externals
-        - name: daemon-json
-          mountPath: /etc/docker/daemon.json
-          subPath: daemon.json
-          readOnly: true
-
-#        - name: var-lib-docker
-#          mountPath: /var/lib/docker
-    volumes:
-#    - name: var-lib-docker
-#      ephemeral:
-#       volumeClaimTemplate:
-#         spec:
-#           accessModes: [ "ReadWriteOnce" ]
-#           storageClassName: "csi-disk"
-#           resources:
-#             requests:
-#               storage: 10Gi
-    - name: work
-      emptyDir: {}
-    - name: dind-sock
-      emptyDir: {}
-    - name: dind-externals
-      emptyDir: {}
-    - name: daemon-json
-      configMap:
-        name: docker-daemon-config
+  ## template:
+  ##   spec:
+  ##     initContainers:
+  ##     - name: init-dind-externals
+  ##       image: ghcr.io/actions/actions-runner:latest
+  ##       command: ["cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+  ##       volumeMounts:
+  ##         - name: dind-externals
+  ##           mountPath: /home/runner/tmpDir
+  ##     containers:
+  ##     - name: runner
+  ##       image: ghcr.io/actions/actions-runner:latest
+  ##       command: ["/home/runner/run.sh"]
+  ##       env:
+  ##         - name: DOCKER_HOST
+  ##           value: unix:///var/run/docker.sock
+  ##       volumeMounts:
+  ##         - name: work
+  ##           mountPath: /home/runner/_work
+  ##         - name: dind-sock
+  ##           mountPath: /var/run
+  ##     - name: dind
+  ##       image: docker:dind
+  ##       args:
+  ##         - dockerd
+  ##         - --host=unix:///var/run/docker.sock
+  ##         - --group=$(DOCKER_GROUP_GID)
+  ##       env:
+  ##         - name: DOCKER_GROUP_GID
+  ##           value: "123"
+  ##       securityContext:
+  ##         privileged: true
+  ##       volumeMounts:
+  ##         - name: work
+  ##           mountPath: /home/runner/_work
+  ##         - name: dind-sock
+  ##           mountPath: /var/run
+  ##         - name: dind-externals
+  ##           mountPath: /home/runner/externals
+  ##     volumes:
+  ##     - name: work
+  ##       emptyDir: {}
+  ##     - name: dind-sock
+  ##       emptyDir: {}
+  ##     - name: dind-externals
+  ##       emptyDir: {}
   ######################################################################################################
   ## with containerMode.type=kubernetes, we will populate the template.spec with following pod spec
   ## template:
@@ -215,18 +186,18 @@ template:
   ##               resources:
   ##                 requests:
   ##                   storage: 1Gi
-#  spec:
-##    hostNetwork: true
-#    dockerMTU: 1442
-#    containers:
-#      - name: runner
-#        image: ghcr.io/actions/actions-runner:latest
-#        command: ["/home/runner/run.sh"]
-#        env:
-#          - name: MTU
-#            value: "1442"
-#          - name: ARC_DOCKER_MTU_PROPAGATION
-#            value: "true"
+  spec:
+    containers:
+      - name: runner
+        image: ghcr.io/actions/actions-runner:latest
+        command: ["/home/runner/run.sh"]
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: "3072Mi"
+          requests:
+            cpu: "10m"
+            memory: "64Mi"
 
 ## Optional controller service account that needs to have required Role and RoleBinding
 ## to operate this gha-runner-scale-set installation.
