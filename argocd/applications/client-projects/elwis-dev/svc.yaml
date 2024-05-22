@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-elwis-data-receiver-dev-api
+  namespace: elwis-dev
+spec:
+  selector:
+    app: elwis-data-receiver-dev
+  ports:
+    - protocol: TCP
+      port: 8000
+      name: api-svc
+      targetPort: api
+  type: ClusterIP

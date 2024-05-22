@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-elwis-data-receiver-dev-api
+  namespace: elwis-dev
+  labels:
+    app: elwis-data-receiver-dev
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/proxy-body-size: "1024m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+spec:
+  tls:
+    - hosts:
+      - elwis-api-dev.tcc-clinicalsolutions.de
+      secretName: elwis-api-dev-tls
+  rules:
+    - host: elwis-api-dev.tcc-clinicalsolutions.de
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: svc-elwis-data-receiver-dev-api
+                port:
+                  number: 8000
