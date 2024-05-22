@@ -26,6 +26,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: elwis-api-dev-oauth2-proxy
+                name: elwis-dev-oauth2-proxy
                 port:
                   number: 80
