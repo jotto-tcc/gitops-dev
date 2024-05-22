@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elwis-data-receiver-dev
+  name: deployment-elwis-data-receiver-dev
+  namespace: elwis-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elwis-data-receiver-dev
+  template:
+    metadata:
+      labels:
+        app: elwis-data-receiver-dev
+      name: elwis-data-receiver-dev
+    spec:
+      containers:
+        - image: swr.eu-de.otc.t-systems.com/client-projects/elwis:latest
+          envFrom:
+            - secretRef:
+                name: elwis-data-receiver-dev-secret
+          command:
+            - uvicorn
+            - src.elwis_data_receiver.main:app
+            - --host
+            - 0.0.0.0
+            - --port
+            - '8000'
+          name: elwis-data-receiver-dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: api
+      hostNetwork: false
+      imagePullSecrets:
+        - name: image-pull-secret
