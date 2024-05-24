@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cardio-api-deployment
+  name: ml-hrv-stress-level-deployment
   namespace: client-projects
   labels:
     app: cardio-api
