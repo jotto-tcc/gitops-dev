@@ -21,7 +21,6 @@ spec:
           image: swr.eu-de.otc.t-systems.com/analytics/hrv-stress-level:0.0.1
           ports:
             - containerPort: 8000
-              name: hrv-stress-level
           envFrom:
             - secretRef:
                 name: secret-cardio-api
