@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cardio-api-deployment
+  namespace: client-projects
+  labels:
+    app: cardio-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cardio-api
+  template:
+    metadata:
+      labels:
+        app: cardio-api
+        deployment: ml-hrv-stress-level
+    spec:
+      containers:
+        - name: ml-hrv-stress-level
+          image: swr.eu-de.otc.t-systems.com/analytics/hrv-stress-level:0.0.1
+          ports:
+            - containerPort: 8000
+              name: hrv-stress-level
+          envFrom:
+            - secretRef:
+                name: secret-cardio-api
+      imagePullSecrets:
+        - name: docker-secret-johannes
