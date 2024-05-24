@@ -26,3 +26,65 @@ spec:
                 name: secret-cardio-api
       imagePullSecrets:
         - name: docker-secret-johannes
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-national-early-warning-score-deployment
+  namespace: client-projects
+  labels:
+    app: cardio-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cardio-api
+  template:
+    metadata:
+      labels:
+        app: cardio-api
+        deployment: national-early-warning-score
+    spec:
+      containers:
+        - name: ml-hrv-stress-level
+          image: swr.eu-de.otc.t-systems.com/analytics/national-early-warning-score:0.0.1
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: secret-cardio-api
+      imagePullSecrets:
+        - name: docker-secret-johannes
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-sepsis-prediction-deployment
+  namespace: client-projects
+  labels:
+    app: cardio-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cardio-api
+  template:
+    metadata:
+      labels:
+        app: cardio-api
+        deployment: sepsis-prediction
+    spec:
+      containers:
+        - name: ml-hrv-stress-level
+          image: swr.eu-de.otc.t-systems.com/analytics/sepsis-prediction:0.0.1
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: secret-cardio-api
+      imagePullSecrets:
+        - name: docker-secret-johannes

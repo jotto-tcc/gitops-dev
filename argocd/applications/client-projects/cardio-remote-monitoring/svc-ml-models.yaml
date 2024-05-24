@@ -11,3 +11,35 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-national-early-warning-score-svc
+  namespace: client-projects
+spec:
+  selector:
+    app: cardio-api
+    deployment: ml-national-early-warning-score
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-sepsis-prediction-svc
+  namespace: client-projects
+spec:
+  selector:
+    app: cardio-api
+    deployment: ml-sepsis-prediction
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
