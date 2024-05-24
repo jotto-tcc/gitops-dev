@@ -45,7 +45,7 @@ spec:
     metadata:
       labels:
         app: cardio-api
-        deployment: national-early-warning-score
+        deployment: ml-national-early-warning-score
     spec:
       containers:
         - name: ml-hrv-stress-level
@@ -76,7 +76,7 @@ spec:
     metadata:
       labels:
         app: cardio-api
-        deployment: sepsis-prediction
+        deployment: ml-sepsis-prediction
     spec:
       containers:
         - name: ml-hrv-stress-level
