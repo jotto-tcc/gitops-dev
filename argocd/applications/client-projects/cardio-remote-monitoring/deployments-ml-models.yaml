@@ -27,7 +27,7 @@ spec:
               memory: 100m
             limits:
               cpu: 1000m
-              memory: 100m
+              memory: 1000m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
@@ -65,7 +65,7 @@ spec:
               memory: 100m
             limits:
               cpu: 1000m
-              memory: 100m
+              memory: 1000m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
@@ -103,7 +103,7 @@ spec:
               memory: 100m
             limits:
               cpu: 1000m
-              memory: 100m
+              memory: 1000m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
