@@ -57,6 +57,13 @@ spec:
       containers:
         - name: ml-hrv-stress-level
           image: swr.eu-de.otc.t-systems.com/analytics/national-early-warning-score:0.0.2
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
           ports:
             - containerPort: 8000
           envFrom:
@@ -88,6 +95,13 @@ spec:
       containers:
         - name: ml-hrv-stress-level
           image: swr.eu-de.otc.t-systems.com/analytics/sepsis-prediction:0.0.1
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
           ports:
             - containerPort: 8000
           envFrom:
