@@ -21,6 +21,13 @@ spec:
           image: swr.eu-de.otc.t-systems.com/analytics/hrv-stress-level:0.0.1
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100m
+            limits:
+              cpu: 1000m
+              memory: 100m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
@@ -52,6 +59,13 @@ spec:
           image: swr.eu-de.otc.t-systems.com/analytics/national-early-warning-score:0.0.2
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100m
+            limits:
+              cpu: 1000m
+              memory: 100m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
@@ -83,6 +97,13 @@ spec:
           image: swr.eu-de.otc.t-systems.com/analytics/sepsis-prediction:0.0.1
           ports:
             - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100m
+            limits:
+              cpu: 1000m
+              memory: 100m
           envFrom:
             - secretRef:
                 name: secret-cardio-api
