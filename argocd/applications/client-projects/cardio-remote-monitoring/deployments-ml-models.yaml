@@ -19,6 +19,9 @@ spec:
       containers:
         - name: ml-hrv-stress-level
           image: swr.eu-de.otc.t-systems.com/analytics/hrv-stress-level:0.0.1
+          resources:
+            limits:
+              cpu: "1"
           ports:
             - containerPort: 8000
           envFrom:
