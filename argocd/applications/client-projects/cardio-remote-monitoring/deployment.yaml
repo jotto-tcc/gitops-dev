@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: cardio-api
-          image: swr.eu-de.otc.t-systems.com/client-projects/cardio-monitoring:v1.0.0-dev1
+          image: swr.eu-de.otc.t-systems.com/client-projects/cardio-monitoring:v1.0.0-dev2
           ports:
             - containerPort: 8000
               name: fastapi
