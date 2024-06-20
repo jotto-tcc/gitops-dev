@@ -20,6 +20,7 @@ spec:
             proxy-body-size: "1024m"
             use-forwarded-headers: "true"
             forwarded-for-header: "X-Forwarded-For"
+            use-http2: "false"
           allowSnippetAnnotations: true
           allowPrivilegeEscalation: false
           service:
