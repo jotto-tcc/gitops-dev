@@ -37,7 +37,7 @@ githubConfigSecret: "github-runner-secret"
 #     - example.org
 
 ## maxRunners is the max number of runners the autoscaling runner set will scale up to.
-maxRunners: 1
+maxRunners: 3
 
 ## minRunners is the min number of idle runners. The target number of runners created will be
 ## calculated as a sum of minRunners and the number of jobs assigned to the scale set.
@@ -124,8 +124,8 @@ template:
      image: ghcr.io/actions/actions-runner:latest
      resources:
        limits:
-         cpu: "1000m"
-         memory: "3Gi"
+         cpu: "2000m"
+         memory: "5Gi"
        requests:
          cpu: "10m"
          memory: "64Mi"
