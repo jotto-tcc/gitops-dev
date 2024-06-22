@@ -1,0 +1,6 @@
+services:
+  actions-runner:
+    build:
+      context: .
+      dockerfile: telehealth-actions-runner.Dockerfile
+    image: swr.eu-de.otc.t-systems.com/ci-cache/telehealth-actions-runner:latest
