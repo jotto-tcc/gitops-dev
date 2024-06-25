@@ -126,7 +126,7 @@ template:
      image: swr.eu-de.otc.t-systems.com/ci-cache/telehealth-actions-runner:latest
      resources:
        limits:
-         cpu: "2000m"
+         cpu: "4000m"
          memory: "5Gi"
        requests:
          cpu: "10m"
